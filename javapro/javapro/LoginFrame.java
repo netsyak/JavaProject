@@ -6,6 +6,8 @@ import java.awt.FlowLayout;
 //import java.awt.ScrollPane;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
@@ -14,6 +16,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPasswordField;
+import javax.swing.JRootPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
@@ -28,14 +31,17 @@ public class LoginFrame extends WindowAdapter implements ActionListener {
 			utfBirth, tfAddr, utfAddr;
 	private JTextArea p1;
 	private JButton btnLogin, btnSignup, b1, b2, b3, b4, ub4, b5, b6, b7, binfo, binfo1, binfo2, binfo3, binfo4, binfo5,
-			binfo6, binfo7, bupdate, ocb;
+			binfo6, binfo7, bupdate, ocb, logout;
 	private MemberDAO dao;
 	private String AllId = "";
 	private JLabel la1, la2;
+
+	private JRootPane rootPane; //엔터로 버튼 신행
+	
 //	private Image background = new ImageIcon(
 //			LoginFrame.class.getResource("C:/BackUp/KKY/Javafiles/First_Project/img/dentalimg-001.png")).getImage();// 배경이미지
 
-	public LoginFrame() {
+	LoginFrame() {
 		dao = new MemberDAO();
 
 		f1 = new JFrame("로그인");
@@ -110,6 +116,7 @@ public class LoginFrame extends WindowAdapter implements ActionListener {
 		info.getContentPane().setBackground(Color.orange);
 		info.setLocationRelativeTo(null);
 		info.addWindowListener(this);
+		info.setResizable(false);
 
 		// 치과 진료 안내 칸
 		p1 = new JTextArea(40, 40); // info 내용 노출 창
@@ -122,22 +129,19 @@ public class LoginFrame extends WindowAdapter implements ActionListener {
 		p1.setBackground(Color.yellow);
 		p1.setLineWrap(true);
 		p1.setEditable(false);
-		p1.setText("  \r\n"
-				+ "    안녕하세요. 반갑습니다.\r\n"
-				+ "\r\n"
-				+ "    오늘도 좋은 하루 되세요 !!!");
+		p1.setText("  \r\n" + "    안녕하세요. 반갑습니다.\r\n" + "\r\n" + "    오늘도 좋은 하루 되세요 !!!");
 
 		// 로그인 화면 창 라벨
+//		JLabel txt = new JLabel();
+//		txt.setBounds(97, 15, 200, 50);
+//		txt.setText("어서오세요. 반갑습니다.");
+//		txt.setFont(txt.getFont().deriveFont(13.f));
 		JLabel txt = new JLabel();
-		txt.setBounds(97, 15, 200, 50);
-		txt.setText("어서오세요. 반갑습니다.");
-		txt.setFont(txt.getFont().deriveFont(13.f));
-		JLabel txt1 = new JLabel();
-		txt1.setBounds(31, 115, 300, 30);
-		txt1.setText("치과진료 & 비용 안내\r\n");
-		txt1.setFont(txt.getFont().deriveFont(29.f));
-		txt1.setForeground(Color.BLUE);
-		
+		txt.setBounds(31, 115, 300, 30);
+		txt.setText("치과진료 & 비용 안내\r\n");
+		txt.setFont(txt.getFont().deriveFont(29.f));
+		txt.setForeground(Color.BLUE);
+
 		JLabel lid = new JLabel("아이디 :", JLabel.RIGHT);
 		lid.setBounds(40, 300, 60, 30);
 		JLabel lpwd = new JLabel("비밀번호 :", JLabel.RIGHT);
@@ -163,13 +167,13 @@ public class LoginFrame extends WindowAdapter implements ActionListener {
 		birth1.setForeground(Color.red);
 		JLabel tel = new JLabel("전화번호 :", JLabel.RIGHT);
 		tel.setBounds(15, 222, 60, 30);
-		JLabel tel1 = new JLabel("예시) 01098761234, '-' 없이 작성하세요", JLabel.RIGHT);
+		JLabel tel1 = new JLabel("예시) 01098761234, '-' 없이 작성하세요.", JLabel.RIGHT);
 		tel1.setBounds(60, 246, 240, 30);
 		tel1.setForeground(Color.red);
 		JLabel addr = new JLabel("주소 :", JLabel.RIGHT);
 		addr.setBounds(15, 280, 60, 30);
-		JLabel addr1 = new JLabel("시/도, 구, 동/마을 까지 작성하세요", JLabel.RIGHT);
-		addr1.setBounds(35, 300, 240, 30);
+		JLabel addr1 = new JLabel("광역시/도, 구/시, 동/마을 까지 작성하세요.", JLabel.RIGHT);
+		addr1.setBounds(70, 300, 240, 30);
 		addr1.setForeground(Color.red);
 
 		// 회원 정보 수정 창
@@ -183,14 +187,17 @@ public class LoginFrame extends WindowAdapter implements ActionListener {
 		ubirth.setBounds(15, 170, 60, 30);
 		JLabel ubirth1 = new JLabel("예시) 20220102", JLabel.RIGHT);
 		ubirth1.setBounds(70, 190, 100, 30);
+		ubirth1.setForeground(Color.red);
 		JLabel utel = new JLabel("전화번호 :", JLabel.RIGHT);
 		utel.setBounds(15, 222, 60, 30);
-		JLabel utel1 = new JLabel("예시) 01098761234, '-' 없이 작성하세요", JLabel.RIGHT);
+		JLabel utel1 = new JLabel("예시) 01098761234, '-' 없이 작성하세요.", JLabel.RIGHT);
 		utel1.setBounds(60, 246, 240, 30);
+		utel1.setForeground(Color.red);
 		JLabel uaddr = new JLabel("주소 :", JLabel.RIGHT);
 		uaddr.setBounds(15, 280, 60, 30);
-		JLabel uaddr1 = new JLabel("시/도, 구, 동/마을 까지 작성하세요", JLabel.RIGHT);
-		uaddr1.setBounds(35, 326, 240, 30);
+		JLabel uaddr1 = new JLabel("광역시/도, 구/시, 동/마을 까지 작성하세요.", JLabel.RIGHT);
+		uaddr1.setBounds(70, 300, 240, 30);
+		uaddr1.setForeground(Color.red);
 
 		// 로그인 화면 텍스트 칸
 		tfId = new JTextField(20);
@@ -202,7 +209,7 @@ public class LoginFrame extends WindowAdapter implements ActionListener {
 		tfPwd.setBackground(Color.white);
 //		tfPwd.setEchoChar('*');// AWT 식 password * 표시 하는 방법
 
-		//치과 정보 검색창 맨트
+		// 치과 정보 검색창 맨트
 		la2 = new JLabel("치과비용은?", JLabel.RIGHT);
 		la2.setBounds(15, 41, 70, 30);
 		la2.setBackground(Color.white);
@@ -212,48 +219,109 @@ public class LoginFrame extends WindowAdapter implements ActionListener {
 		mbId = new JTextField(20);
 		mbId.setBounds(85, 50, 150, 27);
 		mbId.setBackground(Color.white);
+		mbId.addKeyListener(new KeyAdapter() {
+			public void keyTyped(KeyEvent ke) {
+				JTextField src = (JTextField) ke.getSource();
+				if (src.getText().length() >= 16)
+					ke.consume();
+			}
+		});
 
 		mbPwd = new JPasswordField(20);
 		mbPwd.setBounds(85, 90, 150, 27);
 		mbPwd.setBackground(Color.white);
+		mbPwd.addKeyListener(new KeyAdapter() {
+			public void keyTyped(KeyEvent ke) {
+				JTextField src = (JTextField) ke.getSource();
+				if (src.getText().length() >= 16)
+					ke.consume();
+			}
+		});
+		
 
 		tfName = new JTextField(20);
 		tfName.setBounds(85, 130, 150, 27);
 		tfName.setBackground(Color.white);
+		tfName.addKeyListener(new KeyAdapter() {
+
+	public void keyTyped(KeyEvent ke) {
+				JTextField src = (JTextField) ke.getSource();
+				if (src.getText().length() >= 8)
+					ke.consume();
+			}
+		});
 
 		tfBirth = new JTextField(20);
 		tfBirth.setBounds(85, 170, 150, 27);
 		tfBirth.setBackground(Color.white);
+		tfBirth.addKeyListener(new KeyAdapter() {
+			public void keyTyped(KeyEvent ke) {
+				JTextField src = (JTextField) ke.getSource();
+				if (src.getText().length() >= 8)
+					ke.consume();
+			}
+		});
 
 		tfTel = new JTextField(20);
 		tfTel.setBounds(85, 225, 150, 27);
 		tfTel.setBackground(Color.white);
+		tfTel.addKeyListener(new KeyAdapter() {
+			public void keyTyped(KeyEvent ke) {
+				JTextField src = (JTextField) ke.getSource();
+				if (src.getText().length() >= 11)
+					ke.consume();
+			}
+		});
 
 		tfAddr = new JTextField(80);
 		tfAddr.setBounds(85, 280, 200, 27);
 		tfAddr.setBackground(Color.white);
 //		tfAddr.setLineWrap(true); // TextArea 메서드 자동 줄 바꾸기
 
-		// 회원 수정
+		// 회원 정보 수정 창의 Field
 		umbId = new JTextField(20);
 		umbId.setBounds(85, 50, 150, 27);
-		umbId.setBackground(Color.white);
+		umbId.setBackground(Color.lightGray);
+		umbId.setEditable(false); // 회원 수정시 아이디 수정 불가능
 
 		umbPwd = new JPasswordField(20);
 		umbPwd.setBounds(85, 90, 150, 27);
 		umbPwd.setBackground(Color.white);
-//
+		umbPwd.addKeyListener(new KeyAdapter() {
+			public void keyTyped(KeyEvent ke) {
+				JTextField src = (JTextField) ke.getSource();
+				if (src.getText().length() >= 16)
+					ke.consume();
+			}
+		});
+
 		utfName = new JTextField(20);
 		utfName.setBounds(85, 130, 150, 27);
-		utfName.setBackground(Color.white);
+		utfName.setBackground(Color.lightGray);
+		utfName.setEditable(false); // 회원 수정시 수정 불가능
 
 		utfBirth = new JTextField(20);
 		utfBirth.setBounds(85, 170, 150, 27);
-		utfBirth.setBackground(Color.white);
+		utfBirth.setBackground(Color.lightGray);
+		utfBirth.setEditable(false); // 회원 수정시 수정 불가능
+		utfBirth.addKeyListener(new KeyAdapter() {
+			public void keyTyped(KeyEvent ke) {
+				JTextField src = (JTextField) ke.getSource();
+				if (src.getText().length() >= 8)
+					ke.consume();
+			}
+		});
 
 		utfTel = new JTextField(20);
 		utfTel.setBounds(85, 225, 150, 27);
 		utfTel.setBackground(Color.white);
+		utfTel.addKeyListener(new KeyAdapter() {
+			public void keyTyped(KeyEvent ke) {
+				JTextField src = (JTextField) ke.getSource();
+				if (src.getText().length() >= 11)
+					ke.consume();
+			}
+		});
 
 		utfAddr = new JTextField(80);
 		utfAddr.setBounds(85, 280, 200, 27);
@@ -274,47 +342,54 @@ public class LoginFrame extends WindowAdapter implements ActionListener {
 
 		binfo = new JButton("검색");
 		binfo.setBounds(300, 40, 60, 30);
+		rootPane = info.getRootPane();
+		rootPane.setDefaultButton(binfo);
 
 		binfo1 = new JButton("예방치료");
 		binfo1.setBackground(Color.CYAN);
-		binfo1.setBounds(10, 100, 85, 30);
+		binfo1.setBounds(12, 100, 85, 30);
 		binfo1.addActionListener(this);
 
 		binfo2 = new JButton("보존치료");
 		binfo2.setBackground(Color.CYAN);
-		binfo2.setBounds(10, 140, 85, 30);
+		binfo2.setBounds(12, 140, 85, 30);
 		binfo2.addActionListener(this);
 
 		binfo3 = new JButton("보철치료");
 		binfo3.setBackground(Color.CYAN);
-		binfo3.setBounds(10, 180, 85, 30);
+		binfo3.setBounds(12, 180, 85, 30);
 		binfo3.addActionListener(this);
 
 		binfo4 = new JButton("교정치료");
 		binfo4.setBackground(Color.CYAN);
-		binfo4.setBounds(10, 220, 85, 30);
+		binfo4.setBounds(12, 220, 85, 30);
 		binfo4.addActionListener(this);
 
 		binfo5 = new JButton("심미치료");
 		binfo5.setBackground(Color.CYAN);
-		binfo5.setBounds(10, 260, 85, 30);
+		binfo5.setBounds(12, 260, 85, 30);
 		binfo5.addActionListener(this);
 
 		binfo6 = new JButton("신경치료");
 		binfo6.setBackground(Color.CYAN);
-		binfo6.setBounds(10, 300, 85, 30);
+		binfo6.setBounds(12, 300, 85, 30);
 		binfo6.addActionListener(this);
 
 		binfo7 = new JButton("정보수정");
 		binfo7.setBackground(Color.green);
-		binfo7.setBounds(10, 420, 85, 30);
+		binfo7.setBounds(440, 40, 85, 30);
 		binfo7.addActionListener(this);
+
+		logout = new JButton("로그아웃");
+		logout.setBackground(Color.pink);
+		logout.setBounds(530, 40, 85, 30);
+		logout.addActionListener(this);
 
 		info.add(tfinfo);
 		info.add(la1);
 		info.add(la2);
-		info.add(binfo);
-		info.add(p1);
+		info.add(binfo);// 버튼
+		info.add(p1);// 판넬
 		info.add(binfo1);
 		info.add(binfo2);
 		info.add(binfo3);
@@ -322,25 +397,34 @@ public class LoginFrame extends WindowAdapter implements ActionListener {
 		info.add(binfo5);
 		info.add(binfo6);
 		info.add(binfo7);
+		info.add(logout);
 
 		// 버튼 이름들
 		btnLogin = new JButton("로그인");
 		btnLogin.addActionListener(this);
 		btnLogin.setBounds(30, 390, 122, 30);
+		rootPane = f1.getRootPane();
+		rootPane.setDefaultButton(btnLogin);
+		
 		btnSignup = new JButton("회원 가입");
 		btnSignup.addActionListener(this);
 		btnSignup.setBounds(182, 390, 122, 30);
 		
+
 		ocb = new JButton("중복확인");
 		ocb.addActionListener(this);
 
 		b1 = new JButton("확인");
-		b1.addActionListener(this);
 		b1.setBounds(100, 80, 70, 40);
-
+		b1.addActionListener(this);
+		rootPane = f2.getRootPane();
+		rootPane.setDefaultButton(b1);
+		
 		b2 = new JButton("로그인 재시도");
-		b2.addActionListener(this);
 		b2.setBounds(69, 80, 130, 40);
+		b2.addActionListener(this);
+		rootPane = f3.getRootPane();
+		rootPane.setDefaultButton(b2);
 
 		b3 = new JButton("저장하기");
 		b3.setBounds(30, 390, 122, 30);
@@ -371,7 +455,7 @@ public class LoginFrame extends WindowAdapter implements ActionListener {
 		bupdate.addActionListener(this);
 
 		f1.add(txt);
-		f1.add(txt1);
+//		f1.add(txt1);
 		f1.add(lid);
 		f1.add(tfId);
 		f1.add(lpwd);
@@ -385,7 +469,7 @@ public class LoginFrame extends WindowAdapter implements ActionListener {
 		f3.add(msg1);
 		f3.add(b2);
 
-		//회원 가입 정보
+		// 회원 가입 정보
 		f4.add(b3);
 		f4.add(b4);
 		f4.add(ocb);
@@ -405,7 +489,7 @@ public class LoginFrame extends WindowAdapter implements ActionListener {
 		f4.add(birth1);
 		f4.add(tfBirth);
 
-		//회원 정보 수정	
+		// 회원 정보 수정의 자료내용
 		update.add(bupdate);
 		update.add(ub4);
 		update.add(umId);
@@ -439,6 +523,7 @@ public class LoginFrame extends WindowAdapter implements ActionListener {
 //		info.setVisible(true);
 	}
 
+
 	public void windowClosed(WindowEvent e) {
 		System.exit(0);
 
@@ -448,6 +533,7 @@ public class LoginFrame extends WindowAdapter implements ActionListener {
 //		g.drawImage(background,0,0,null);
 //	}
 
+	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getActionCommand().equals("로그인")) {
@@ -485,8 +571,14 @@ public class LoginFrame extends WindowAdapter implements ActionListener {
 		}
 		if (e.getActionCommand().equals("회원 가입")) {
 			System.out.println("Click! 회원 가입");
+			mbId.setText("");
+			mbPwd.setText("");
+			tfName.setText("");
+			tfBirth.setText("");
+			tfTel.setText("");
+			tfAddr.setText("");
+			tfId.requestFocus();
 			f4.setVisible(true);
-
 		}
 		if (e.getActionCommand().equals("재확인")) {
 			System.out.println("Click! 재확인");
@@ -502,6 +594,15 @@ public class LoginFrame extends WindowAdapter implements ActionListener {
 			la1.setText(AllId + "님 어서오세요");// 회원 성함 노출
 
 		}
+		if (e.getActionCommand().equals("로그아웃")) {
+			System.out.println("Click! 로그아웃");
+			info.setVisible(false);
+			f1.setVisible(true);
+			tfId.setText("");
+			tfPwd.setText("");
+			tfId.requestFocus();
+
+		}
 		if (e.getActionCommand().equals("로그인 재시도")) {
 			System.out.println("Click! 로그인 재시도");
 			f3.setVisible(false);
@@ -512,9 +613,14 @@ public class LoginFrame extends WindowAdapter implements ActionListener {
 			System.out.println("Click! 뒤로가기");
 			f4.setVisible(false);
 			info.setVisible(false);
+			update.setVisible(false);
 			f1.setVisible(true);
-
+			tfId.setText("");
+			tfPwd.setText("");
+			umbId.setText("");
+			umbPwd.setText("");
 		}
+		
 		if (e.getActionCommand().equals("등록확인")) {
 			System.out.println("Click! 등록확인");
 			update.setVisible(false);
