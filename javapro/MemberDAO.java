@@ -1,4 +1,4 @@
-package javapro;
+package dao;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 public class MemberDAO {
 	String driver = "oracle.jdbc.driver.OracleDriver";
-	String url = "jdbc:oracle:thin:@192.168.0.136:1521:xe";
+	String url = "jdbc:oracle:thin:@192.168.25.38:1521:xe";
 	String user = "c##green";
 	String password = "green1234";
 
@@ -22,7 +22,7 @@ public class MemberDAO {
 		try {
 			connDB();
 
-			String query = "SELECT * FROM LOGINDB";
+			String query = "SELECT * FROM DENTALMEMBER";
 			if (id != null) {
 //				query += " where id='" + id.toUpperCase() + "'";
 				query += " where id='" + id + "'";
@@ -39,11 +39,14 @@ public class MemberDAO {
 				rs.previous();
 				
 				while (rs.next()) {
-					String strid = rs.getString("id"); // 레이어드 수정
-					String strpwd = rs.getString("password"); // 레이어드 수정
-//					int sal = rs.getInt("sal");           //  레이어드 수정
-
-					MemberVo data = new MemberVo(strid, strpwd);
+					String strid = rs.getString("ID"); // 레이어드 수정
+					String strpwd = rs.getString("PWD"); // 레이어드 수정
+					String strname = rs.getString("Name");
+					String strbirth = rs.getString("Birth");
+					String strtel = rs.getString("Tel");
+					String straddress = rs.getString("Address");
+					
+					MemberVo data = new MemberVo(strid, strpwd, strname, strbirth, strtel, straddress);
 					list.add(data);
 
 				}
@@ -58,7 +61,7 @@ public class MemberDAO {
 	public void connDB() {
 		try {
 			Class.forName(driver);
-			System.out.println("jdbc driver loading success.");
+			System.out.println("connDB_jdbc driver loading success.");
 			con = DriverManager.getConnection(url, user, password);
 			System.out.println("oracle connection success.");
 			// stmt = con.createStatement();
